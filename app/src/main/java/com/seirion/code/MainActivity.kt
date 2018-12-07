@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import com.seirion.code.data.allCodeData
+import com.seirion.code.data.deleteCodeData
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
 import com.seirion.code.util.codeTextPretty
@@ -78,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         private class CodeViewHolder(view: View) : ViewHolder(view) {
+            private val root = view
             private val nameTextView: TextView = view.findViewById(R.id.name)
             private val imageView: ImageView = view.findViewById(R.id.codeImage)
             private val codeText: TextView = view.findViewById(R.id.code)
@@ -92,6 +95,17 @@ class MainActivity : AppCompatActivity() {
                     .subscribe(
                         { imageView.setImageBitmap(it) },
                         { Log.e(TAG, "Failed To generate barcode: ${codeData.code}") })
+
+                root.setOnLongClickListener { showDeletePopup(codeData) }
+            }
+
+            private fun showDeletePopup(codeData: CodeData): Boolean {
+                AlertDialog.Builder(root.context)
+                    .setTitle(R.string.item_remove_title)
+                    .setMessage(R.string.item_remove_message)
+                    .setPositiveButton(R.string.delete) { _, _ -> deleteCodeData(root.context, codeData) }
+                    .show()
+                return true
             }
         }
 
