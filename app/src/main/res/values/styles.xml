@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -13,4 +13,24 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="cardNumberInput">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:inputType">number</item>
+        <item name="android:hint">"0000"</item>
+        <item name="android:textColorHint">@color/transparent</item>
+        <item name="android:maxLength">4</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="cardNumberSeparator">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:text" tools:ignore="textHardCoded">"-"</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

@@ -4,4 +4,5 @@
     <string name="list">목록</string>
     <string name="input_code">코드 입력</string>
     <string name="scanning">스캔하기</string>
+    <string name="card_name">카드 이름</string>
 </resources>

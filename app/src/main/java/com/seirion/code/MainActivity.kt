@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.LayoutInflater
+import com.seirion.code.ui.InputCodeActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = Adapter(this)
+
+        inputCode.setOnClickListener { InputCodeActivity.start(this) }
+        scanning.setOnClickListener({})
     }
 
 
