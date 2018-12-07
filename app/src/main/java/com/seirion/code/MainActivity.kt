@@ -2,7 +2,6 @@ package com.seirion.code
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.os.Bundle
@@ -13,17 +12,13 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.WriterException
-import com.google.zxing.common.BitMatrix
 import com.seirion.code.data.allCodeData
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import android.graphics.Color
-import com.google.zxing.MultiFormatWriter
+import com.seirion.code.util.generateBarCode
 import io.reactivex.Single
 
 
@@ -96,32 +91,6 @@ class MainActivity : AppCompatActivity() {
                     .subscribe(
                         { imageView.setImageBitmap(it) },
                         { Log.e(TAG, "Failed To generate barcode: ${codeData.code}") })
-            }
-
-            private fun generateBarCode(string: String): Bitmap {
-                try {
-                    val codeWriter = MultiFormatWriter()
-                    return toBitmap(codeWriter.encode(string, BarcodeFormat.CODE_128, 1500, 400))
-                } catch (e: WriterException) {
-                    throw e
-                }
-            }
-
-            private fun toBitmap(matrix: BitMatrix): Bitmap {
-                val height = matrix.height
-                val width = matrix.width
-                val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-
-                for (x in 0 until width) {
-                    for (y in 0 until height) {
-                        val color = when (matrix.get(x, y)) {
-                            true -> Color.BLACK
-                            else -> Color.WHITE
-                        }
-                        bmp.setPixel(x, y, color)
-                    }
-                }
-                return bmp
             }
         }
 
