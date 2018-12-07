@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.seirion.code.R
+import com.seirion.code.data.DataManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_input_code.*
 
@@ -49,7 +50,7 @@ class InputCodeActivity : AppCompatActivity() {
         val codeString = cardNumber0.text.toString() + cardNumber1.text.toString() +
                     cardNumber2.text.toString() + cardNumber3.text.toString()
         Log.d(TAG, "addCodeData: $name, $codeString")
-        com.seirion.code.data.addCodeData(this, name, codeString)
+        DataManager.addCodeData(this, name, codeString)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { finish() },

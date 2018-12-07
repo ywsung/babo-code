@@ -13,8 +13,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
-import com.seirion.code.data.allCodeData
-import com.seirion.code.data.deleteCodeData
+import com.seirion.code.data.DataManager
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
 import com.seirion.code.util.codeTextPretty
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        allCodeData(this)
+        DataManager.allCodeData(this)
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterSuccess {
                 initUi()
@@ -103,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 AlertDialog.Builder(root.context)
                     .setTitle(R.string.item_remove_title)
                     .setMessage(R.string.item_remove_message)
-                    .setPositiveButton(R.string.delete) { _, _ -> deleteCodeData(root.context, codeData) }
+                    .setPositiveButton(R.string.delete) { _, _ -> DataManager.deleteCodeData(root.context, codeData) }
                     .show()
                 return true
             }
