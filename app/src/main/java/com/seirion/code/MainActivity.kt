@@ -16,7 +16,6 @@ import android.widget.TextView
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
-import com.google.zxing.qrcode.QRCodeWriter
 import com.seirion.code.data.allCodeData
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
@@ -24,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import android.graphics.Color
-import com.google.zxing.MultiFormatReader
 import com.google.zxing.MultiFormatWriter
 import io.reactivex.Single
 
@@ -86,10 +84,12 @@ class MainActivity : AppCompatActivity() {
         private class CodeViewHolder(view: View) : ViewHolder(view) {
             private val nameTextView: TextView = view.findViewById(R.id.name)
             private val imageView: ImageView = view.findViewById(R.id.codeImage)
+            private val codeText: TextView = view.findViewById(R.id.code)
 
             @SuppressLint("CheckResult")
             override fun bind(codeData: CodeData) {
                 nameTextView.text = codeData.name
+                codeText.text = codeData.code
                 Single.fromCallable { generateBarCode(codeData.code) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
