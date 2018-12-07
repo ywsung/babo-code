@@ -1,5 +1,6 @@
 package com.seirion.code.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.seirion.code.R
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_input_code.*
 
 
@@ -38,10 +40,20 @@ class InputCodeActivity : AppCompatActivity() {
             }
         })
 
-        ok.setOnClickListener {
-            Log.d(TAG, "ok clicked")
-            //createBarCode()
-        }
+        ok.setOnClickListener { addCodeData() }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun addCodeData() {
+        val name = cardName.text.toString().trim()
+        val codeString = cardNumber0.text.toString() + cardNumber1.text.toString() +
+                    cardNumber2.text.toString() + cardNumber3.text.toString()
+        Log.d(TAG, "addCodeData: $name, $codeString")
+        com.seirion.code.data.addCodeData(this, name, codeString)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { finish() },
+                { Log.e(TAG, "Failed to addCodeData: $name, $codeString") })
     }
 
     private fun addTextChangeListener(editText: EditText) {
@@ -75,9 +87,10 @@ class InputCodeActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = InputCodeActivity.javaClass.simpleName
+        private val TAG = InputCodeActivity::class.java.simpleName
 
         fun start(activity: Activity) {
+            Log.d(TAG, "$TAG.start()")
             val intent = Intent(activity, InputCodeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             activity.startActivity(intent)
