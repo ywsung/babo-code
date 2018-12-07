@@ -7,4 +7,6 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="gray">#777777</color>
+
+    <color name="primary_dark">#2e343d</color>
 </resources>

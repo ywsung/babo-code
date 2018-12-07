@@ -41,4 +41,5 @@ dependencies {
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha1'
 
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'net.i2p.android.ext:floatingactionbutton:1.9.0'
 }

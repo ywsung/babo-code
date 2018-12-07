@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainFrame"
     android:layout_width="match_parent"
@@ -13,14 +14,17 @@
         android:id="@+id/headTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:text="@string/list"
         android:textSize="20sp"
         android:textColor="@color/black"
     />
 
     <View
+        android:id="@+id/separator"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="1px"
+        android:layout_below="@+id/headTitle"
         android:background="@color/gray"
         />
 
@@ -28,6 +32,43 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
         android:scrollbars="none" />
 
-</LinearLayout>
+    <net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        fab:fab_addButtonColorNormal="#FF14a1fb"
+        fab:fab_addButtonColorPressed="#80738ffe"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp">
+
+        <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scanning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_icon="@drawable/ic_launcher_background"
+            fab:fab_colorNormal="#e91e63"
+            fab:fab_colorPressed="#c2185b"
+            fab:fab_title="@string/scanning"
+        />
+
+        <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
+            android:id="@+id/inputCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_icon="@drawable/ic_launcher_background"
+            fab:fab_colorNormal="#00bfa5"
+            fab:fab_colorPressed="#009688"
+            fab:fab_title="@string/input_code"
+        />
+
+    </net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu>
+</RelativeLayout>
