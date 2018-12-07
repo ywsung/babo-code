@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -42,4 +44,10 @@ dependencies {
 
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'net.i2p.android.ext:floatingactionbutton:1.9.0'
+
+    // room
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+    kaptTest "android.arch.persistence.room:testing:1.1.1"
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
 }
