@@ -18,6 +18,7 @@
         </activity>
 
         <activity android:name=".ui.InputCodeActivity" />
+        <activity android:name=".ui.ScanningActivity" />
 
     </application>
 

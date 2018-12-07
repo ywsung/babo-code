@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.seirion.code.data.DataManager
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
+import com.seirion.code.ui.ScanningActivity
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         inputCode.setOnClickListener { InputCodeActivity.start(this) }
-        scanning.setOnClickListener({})
+        scanning.setOnClickListener { ScanningActivity.start(this) }
 
         DataManager.observeDataChange()
             .observeOn(AndroidSchedulers.mainThread())
@@ -74,7 +75,6 @@ class MainActivity : AppCompatActivity() {
                 .subscribe( { adapter.dataList = it }, { Log.e(TAG, "Failed to update ui: $it") })
         }
     }
-
 
     private class Adapter(context: Context, dataList: List<CodeData>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
