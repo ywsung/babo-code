@@ -32,3 +32,8 @@ fun toBitmap(matrix: BitMatrix): Bitmap {
     }
     return bmp
 }
+
+fun codeTextPretty(str: String, separator: String = " - ") =
+    if (str.length == 16) {
+        "${str.substring(0, 4)}$separator${str.substring(4, 8)}$separator${str.substring(8, 12)}$separator${str.substring(12, 16)}"
+    } else str

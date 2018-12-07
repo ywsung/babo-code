@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.seirion.code.data.allCodeData
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
+import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             @SuppressLint("CheckResult")
             override fun bind(codeData: CodeData) {
                 nameTextView.text = codeData.name
-                codeText.text = codeData.code
+                codeText.text = codeTextPretty(codeData.code)
                 Single.fromCallable { generateBarCode(codeData.code) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
