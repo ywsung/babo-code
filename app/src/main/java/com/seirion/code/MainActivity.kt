@@ -1,13 +1,18 @@
 package com.seirion.code
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.LayoutInflater
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -16,8 +21,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        loadData()
+    }
 
-        initUi()
+    @SuppressLint("CheckResult")
+    private fun loadData() {
+        Completable.fromAction { } // FIXME
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe( { initUi() }, { Log.e(TAG, "Failed to load data: $it") })
     }
 
     private fun initUi() {
@@ -30,10 +42,9 @@ class MainActivity : AppCompatActivity() {
     private class Adapter(context: Context) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
         private val inflater = LayoutInflater.from(context)!!
-        private lateinit var data: ArrayList<String> // FIXME
+        private var data = ArrayList<String>()
 
-        //override fun getItemCount() = data.size
-        override fun getItemCount() = 0
+        override fun getItemCount() = data.size
 
         override fun getItemViewType(position: Int) = 0
 
