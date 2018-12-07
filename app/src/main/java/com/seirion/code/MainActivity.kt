@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             .subscribe( { codeDataList = it }, { Log.e(TAG, "Failed to load data: $it") })
     }
 
+    @SuppressLint("CheckResult")
     private fun initUi() {
         Log.d(TAG, "initUi()")
         val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
@@ -57,13 +58,28 @@ class MainActivity : AppCompatActivity() {
 
         inputCode.setOnClickListener { InputCodeActivity.start(this) }
         scanning.setOnClickListener({})
+
+        DataManager.observeDataChange()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { updateUi() }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun updateUi() {
+        val adapter = recyclerView.adapter
+        if (adapter is Adapter) {
+            DataManager.allCodeData(this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterSuccess { adapter.notifyDataSetChanged() }
+                .subscribe( { adapter.dataList = it }, { Log.e(TAG, "Failed to update ui: $it") })
+        }
     }
 
 
     private class Adapter(context: Context, dataList: List<CodeData>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
         private val inflater = LayoutInflater.from(context)!!
-        private val dataList = dataList
+        var dataList = dataList
 
         override fun getItemCount() = dataList.size
 
