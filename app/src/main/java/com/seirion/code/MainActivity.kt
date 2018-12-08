@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             private fun showDeletePopup(codeData: CodeData): Boolean {
-                AlertDialog.Builder(root.context)
+                AlertDialog.Builder(activity)
                     .setTitle(R.string.item_remove_title)
                     .setMessage(R.string.item_remove_message)
                     .setPositiveButton(R.string.delete) { _, _ -> DataManager.deleteCodeData(root.context, codeData) }
