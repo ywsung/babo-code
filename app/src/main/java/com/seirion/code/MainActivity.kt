@@ -1,6 +1,7 @@
 package com.seirion.code
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.seirion.code.data.DataManager
 import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
 import com.seirion.code.ui.ScanningActivity
+import com.seirion.code.ui.SingleActivity
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -76,9 +78,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private class Adapter(context: Context, dataList: List<CodeData>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+    private class Adapter(activity: Activity, dataList: List<CodeData>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-        private val inflater = LayoutInflater.from(context)!!
+        private val activity = activity
+        private val inflater = LayoutInflater.from(activity.applicationContext)!!
         var dataList = dataList
 
         override fun getItemCount() = dataList.size
@@ -94,7 +97,7 @@ class MainActivity : AppCompatActivity() {
             holder.bind(dataList[position])
         }
 
-        private class CodeViewHolder(view: View) : ViewHolder(view) {
+        private inner class CodeViewHolder(view: View) : ViewHolder(view) {
             private val root = view
             private val nameTextView: TextView = view.findViewById(R.id.name)
             private val imageView: ImageView = view.findViewById(R.id.codeImage)
@@ -112,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                         { Log.e(TAG, "Failed To generate barcode: ${codeData.code}") })
 
                 root.setOnLongClickListener { showDeletePopup(codeData) }
+                root.setOnClickListener { SingleActivity.start(activity) }
             }
 
             private fun showDeletePopup(codeData: CodeData): Boolean {
