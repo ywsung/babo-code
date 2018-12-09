@@ -107,13 +107,7 @@ class MainActivity : AppCompatActivity() {
             override fun bind(codeData: CodeData) {
                 nameTextView.text = codeData.name
                 codeText.text = codeTextPretty(codeData.code)
-                Single.fromCallable { generateBarCode(codeData.code) }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        { imageView.setImageBitmap(it) },
-                        { Log.e(TAG, "Failed To generate barcode: ${codeData.code}") })
-
+                imageView.setImageBitmap(generateBarCode(codeData.code))
                 root.setOnLongClickListener { showDeletePopup(codeData) }
                 root.setOnClickListener { SingleActivity.start(activity) }
             }
