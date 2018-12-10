@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.seirion.code.data.DataManager
 import com.seirion.code.db.CodeData
+import com.seirion.code.util.DisplayUtils
 import com.seirion.code.util.codeTextPretty
 import com.seirion.code.util.generateBarCode
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -77,7 +78,7 @@ class SingleActivity : AppCompatActivity() {
             linearLayout.findViewById<TextView>(R.id.code).text = codeTextPretty(codeData.code)
 
             val codeImage = linearLayout.findViewById<ImageView>(R.id.codeImage)
-            codeImage.setImageBitmap(generateBarCode(codeData.code))
+            codeImage.setImageBitmap(generateBarCode(codeData.code, DisplayUtils.displayHeight))
             return linearLayout
         }
 

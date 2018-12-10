@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             override fun bind(codeData: CodeData) {
                 nameTextView.text = codeData.name
                 codeText.text = codeTextPretty(codeData.code)
-                imageView.setImageBitmap(generateBarCode(codeData.code))
+                imageView.setImageBitmap(generateBarCode(codeData.code, DisplayUtils.displayWidth))
                 root.setOnLongClickListener { showDeletePopup(codeData) }
                 root.setOnClickListener { SingleActivity.start(activity) }
             }

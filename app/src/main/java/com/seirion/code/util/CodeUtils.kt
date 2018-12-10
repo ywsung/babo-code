@@ -7,10 +7,12 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 
-fun generateBarCode(string: String): Bitmap {
+fun generateBarCode(string: String, width: Int): Bitmap {
     try {
         val codeWriter = MultiFormatWriter()
-        return toBitmap(codeWriter.encode(string, BarcodeFormat.CODE_128, 1500, 400))
+        val width = width * 8 / 10 // 80%
+        val height = width * 5 / 4 / 4
+        return toBitmap(codeWriter.encode(string, BarcodeFormat.CODE_128, width, height))
     } catch (e: WriterException) {
         throw e
     }
