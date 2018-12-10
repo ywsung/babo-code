@@ -11,7 +11,7 @@ fun generateBarCode(string: String, width: Int): Bitmap {
     try {
         val codeWriter = MultiFormatWriter()
         val width = width * 8 / 10 // 80%
-        val height = width * 5 / 4 / 4
+        val height = width * 4 / 15
         return toBitmap(codeWriter.encode(string, BarcodeFormat.CODE_128, width, height))
     } catch (e: WriterException) {
         throw e
