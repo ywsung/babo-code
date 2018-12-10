@@ -19,6 +19,7 @@ import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
 import com.seirion.code.ui.ScanningActivity
 import com.seirion.code.ui.SingleActivity
+import com.seirion.code.util.DisplayUtils
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate()")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        DisplayUtils.init(this)
         loadData()
     }
 
