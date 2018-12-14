@@ -56,7 +56,7 @@ class ScanningActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == IntentIntegrator.REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == IntentIntegrator.REQUEST_CODE) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (result == null) {
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
