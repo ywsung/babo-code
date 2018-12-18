@@ -8,7 +8,7 @@ import java.util.*
 
 
 
-class IoUtils {
+class JsonUtils {
     companion object {
         fun toJson(codeData: List<CodeData>): String {
             var gson = Gson()
