@@ -28,10 +28,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class SingleActivity : AppCompatActivity() {
 
     private lateinit var codeDataList: List<CodeData>
+    private var currentItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single)
+        intent?.let {
+            currentItem = it.getIntExtra(KEY_CURRENT_ITEM, currentItem)
+            Log.d(TAG, "initial page: $currentItem")
+        }
         loadData()
     }
 
@@ -46,6 +51,7 @@ class SingleActivity : AppCompatActivity() {
     private fun initUi() {
         val adapter = Adapter(this, codeDataList)
         viewPager.adapter = adapter
+        viewPager.currentItem = currentItem
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -96,11 +102,13 @@ class SingleActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = SingleActivity::class.java.simpleName
+        private const val KEY_CURRENT_ITEM = "KEY_CURRENT_ITEM"
 
-        fun start(activity: Activity) {
+        fun start(activity: Activity, currentItem: Int = 0) {
             Log.d(TAG, "$TAG.start()")
             val intent = Intent(activity, SingleActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            intent.putExtra(KEY_CURRENT_ITEM, currentItem)
             activity.startActivity(intent)
         }
     }

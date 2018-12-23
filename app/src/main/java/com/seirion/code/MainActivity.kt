@@ -22,10 +22,8 @@ import com.seirion.code.ui.SingleActivity
 import com.seirion.code.util.DisplayUtils
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import com.seirion.code.util.generateBarCode
-import io.reactivex.Single
 
 
 class MainActivity : AppCompatActivity() {
@@ -96,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(dataList[position])
+            holder.bind(dataList[position], position)
         }
 
         private inner class CodeViewHolder(view: View) : ViewHolder(view) {
@@ -104,14 +102,16 @@ class MainActivity : AppCompatActivity() {
             private val nameTextView: TextView = view.findViewById(R.id.name)
             private val imageView: ImageView = view.findViewById(R.id.codeImage)
             private val codeText: TextView = view.findViewById(R.id.code)
+            private var index: Int = 0
 
             @SuppressLint("CheckResult")
-            override fun bind(codeData: CodeData) {
+            override fun bind(codeData: CodeData, position: Int) {
+                index = position
                 nameTextView.text = codeData.name
                 codeText.text = codeTextPretty(codeData.code)
                 imageView.setImageBitmap(generateBarCode(codeData.code, DisplayUtils.displayWidth))
                 root.setOnLongClickListener { showDeletePopup(codeData) }
-                root.setOnClickListener { SingleActivity.start(activity) }
+                root.setOnClickListener { SingleActivity.start(activity, index) }
             }
 
             private fun showDeletePopup(codeData: CodeData): Boolean {
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         open class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-            open fun bind(codeData: CodeData) { }
+            open fun bind(codeData: CodeData, position: Int) { }
         }
     }
 
