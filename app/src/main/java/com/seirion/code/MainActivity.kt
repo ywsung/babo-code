@@ -2,7 +2,6 @@ package com.seirion.code
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.os.Bundle
@@ -36,6 +35,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         DisplayUtils.init(this)
         loadData()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        menu.collapse()
+    }
+
+    override fun onBackPressed() {
+        if (menu.isExpanded) {
+            menu.collapse()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     @SuppressLint("CheckResult")
