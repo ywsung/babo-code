@@ -14,7 +14,9 @@
         android:id="@+id/cardName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textSize="18sp"
+        android:textColorHint="@color/gray"
         android:hint="@string/card_name" />
 
     <LinearLayout
