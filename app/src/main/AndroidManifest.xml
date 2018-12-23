@@ -19,7 +19,7 @@
 
         <activity android:name=".ui.InputCodeActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.ScanningActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.SingleActivity" android:screenOrientation="landscape" />
+        <activity android:name=".ui.SingleActivity" android:screenOrientation="portrait" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"

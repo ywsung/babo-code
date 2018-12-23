@@ -56,7 +56,6 @@ class SingleActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
             }
         })
-        viewPager.pageMargin = 100
     }
 
     private class Adapter(context: Context, dataList: List<CodeData>): PagerAdapter() {
@@ -71,14 +70,21 @@ class SingleActivity : AppCompatActivity() {
 
         @SuppressLint("CheckResult")
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val linearLayout = LayoutInflater.from(context).inflate(R.layout.layout_single_item, null)
+            val linearLayout = LayoutInflater.from(context).inflate(R.layout.item_code, null)
             container.addView(linearLayout)
             val codeData = dataList[position]
             linearLayout.findViewById<TextView>(R.id.name).text = codeData.name
             linearLayout.findViewById<TextView>(R.id.code).text = codeTextPretty(codeData.code)
 
             val codeImage = linearLayout.findViewById<ImageView>(R.id.codeImage)
+
             codeImage.setImageBitmap(generateBarCode(codeData.code, DisplayUtils.displayHeight))
+            /*
+            Single.fromCallable { generateBarCode(codeData.code, DisplayUtils.displayHeight) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ codeImage.setImageBitmap(it) }, { Log.e(TAG, "Error on generateBarcode(): $it") })
+                */
             return linearLayout
         }
 

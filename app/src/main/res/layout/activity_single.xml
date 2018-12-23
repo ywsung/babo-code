@@ -6,10 +6,10 @@
     android:background="@color/white"
     android:gravity="center" >
 
-    <com.seirion.code.widget.KKViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@color/transparent"
         android:clipToPadding="false" />
