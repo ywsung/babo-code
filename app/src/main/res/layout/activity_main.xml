@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_size="mini"
-            fab:fab_icon="@drawable/ic_launcher_background"
+            fab:fab_icon="@drawable/ic_phone"
             fab:fab_colorNormal="#e91e63"
             fab:fab_colorPressed="#c2185b"
             fab:fab_title="@string/scanning"
