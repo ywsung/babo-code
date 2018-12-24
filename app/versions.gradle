@@ -1,0 +1,9 @@
+
+ext.getVersionCode = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine('bash', '-c', 'git tag | wc -l')
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInteger();
+}
