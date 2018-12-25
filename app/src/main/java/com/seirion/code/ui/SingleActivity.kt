@@ -62,6 +62,7 @@ class SingleActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
             }
         })
+        viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.view_pager_item_margin)
     }
 
     private class Adapter(context: Context, dataList: List<CodeData>): PagerAdapter() {
