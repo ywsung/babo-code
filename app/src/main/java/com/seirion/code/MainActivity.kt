@@ -18,11 +18,11 @@ import com.seirion.code.db.CodeData
 import com.seirion.code.ui.InputCodeActivity
 import com.seirion.code.ui.ScanningActivity
 import com.seirion.code.ui.SingleActivity
+import com.seirion.code.util.BitmapCache
 import com.seirion.code.util.DisplayUtils
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import com.seirion.code.util.generateBarCode
 import java.util.*
 
 
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
                 index = position
                 nameTextView.text = codeData.name
                 codeText.text = codeTextPretty(codeData.code)
-                imageView.setImageBitmap(generateBarCode(codeData.code, DisplayUtils.displayWidth))
+                imageView.setImageBitmap(BitmapCache.get(codeData.code))
                 root.setOnLongClickListener { showDeletePopup(codeData) }
                 root.setOnClickListener { SingleActivity.start(activity, index) }
             }
