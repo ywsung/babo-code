@@ -23,17 +23,17 @@ import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import com.seirion.code.util.generateBarCode
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var codeDataList: List<CodeData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate()")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         DisplayUtils.init(this)
+        initUi()
         loadData()
     }
 
@@ -51,50 +51,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("CheckResult")
-    private fun loadData() {
-        DataManager.allCodeData(this)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doAfterSuccess {
-                initUi()
-            }
-            .subscribe( { codeDataList = it }, { Log.e(TAG, "Failed to load data: $it") })
-    }
-
-    @SuppressLint("CheckResult")
     private fun initUi() {
         Log.d(TAG, "initUi()")
         val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = Adapter(this, codeDataList)
-
-        for (codeData in codeDataList) {
-            Log.e(TAG, "$codeData")
-        }
+        recyclerView.adapter = Adapter(this)
 
         inputCode.setOnClickListener { InputCodeActivity.start(this) }
         scanning.setOnClickListener { ScanningActivity.start(this) }
 
-        DataManager.observeDataChange()
+        DataManager.allCodeData(this)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { updateUi() }
+            .subscribe({ updateUi(it) }, { Log.e(TAG, "Failed to load data: $it") })
     }
 
     @SuppressLint("CheckResult")
-    private fun updateUi() {
-        val adapter = recyclerView.adapter
-        if (adapter is Adapter) {
-            DataManager.allCodeData(this)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterSuccess { adapter.notifyDataSetChanged() }
-                .subscribe( { adapter.dataList = it }, { Log.e(TAG, "Failed to update ui: $it") })
+    private fun loadData() {
+        val adapter = recyclerView.adapter as Adapter
+        DataManager.observeDataChange()
+            .map { DataManager.allCodeData(this).blockingGet() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { adapter.dataList = it }
+            .subscribe({ updateUi(it) }, { Log.e(TAG, "Failed to update ui: $it") })
+    }
+
+    private fun updateUi(dataList: List<CodeData>) {
+        Log.d(TAG, "updateUi() with dataSize ${dataList.size}")
+        recyclerView.adapter.let {
+            if (it is Adapter) {
+                it.dataList = dataList
+                if (dataList.isEmpty()) {
+                    emptyMessage.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                } else {
+                    emptyMessage.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
+                }
+                it.notifyDataSetChanged()
+            }
         }
     }
 
-    private class Adapter(activity: Activity, dataList: List<CodeData>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+    private class Adapter(activity: Activity) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
         private val activity = activity
         private val inflater = LayoutInflater.from(activity.applicationContext)!!
-        var dataList = dataList
+        var dataList: List<CodeData> = Collections.emptyList<CodeData>()!!
 
         override fun getItemCount() = dataList.size
 
