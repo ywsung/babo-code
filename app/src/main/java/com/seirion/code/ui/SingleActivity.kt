@@ -74,24 +74,16 @@ class SingleActivity : AppCompatActivity() {
 
         override fun getCount() = dataList.size
 
-        @SuppressLint("CheckResult")
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val linearLayout = LayoutInflater.from(context).inflate(R.layout.item_code, null)
-            container.addView(linearLayout)
+            val view = LayoutInflater.from(context).inflate(R.layout.item_code, null)
+            container.addView(view)
             val codeData = dataList[position]
-            linearLayout.findViewById<TextView>(R.id.name).text = codeData.name
-            linearLayout.findViewById<TextView>(R.id.code).text = codeTextPretty(codeData.code)
+            view.findViewById<TextView>(R.id.name).text = codeData.name
+            view.findViewById<TextView>(R.id.code).text = codeTextPretty(codeData.code)
 
-            val codeImage = linearLayout.findViewById<ImageView>(R.id.codeImage)
-
+            val codeImage = view.findViewById<ImageView>(R.id.codeImage)
             codeImage.setImageBitmap(BitmapCache.get(codeData.code))
-            /*
-            Single.fromCallable { generateBarCode(codeData.code, DisplayUtils.displayHeight) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ codeImage.setImageBitmap(it) }, { Log.e(TAG, "Error on generateBarcode(): $it") })
-                */
-            return linearLayout
+            return view
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
