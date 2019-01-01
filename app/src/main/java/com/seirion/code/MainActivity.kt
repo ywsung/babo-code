@@ -2,7 +2,6 @@ package com.seirion.code
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -15,6 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.seirion.code.data.DataManager
 import com.seirion.code.db.CodeData
+import com.seirion.code.rx.ActivityLifecycle
+import com.seirion.code.rx.RxAppCompatActivity
 import com.seirion.code.ui.InputCodeActivity
 import com.seirion.code.ui.ScanningActivity
 import com.seirion.code.ui.SingleActivity
@@ -23,10 +24,10 @@ import com.seirion.code.util.DisplayUtils
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import java.util.Collections
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : RxAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate()")
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadData() {
         val adapter = recyclerView.adapter as Adapter
         DataManager.observeDataChange()
+            .takeUntil(getLifecycleSignal(ActivityLifecycle.DESTROY))
             .map { DataManager.allCodeData(this).blockingGet() }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { adapter.dataList = it }

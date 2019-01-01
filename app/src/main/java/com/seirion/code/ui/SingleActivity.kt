@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +19,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.seirion.code.data.DataManager
 import com.seirion.code.db.CodeData
+import com.seirion.code.rx.ActivityLifecycle
+import com.seirion.code.rx.RxAppCompatActivity
 import com.seirion.code.util.BitmapCache
 import com.seirion.code.util.codeTextPretty
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 
-class SingleActivity : AppCompatActivity() {
+class SingleActivity : RxAppCompatActivity() {
 
     private lateinit var codeDataList: List<CodeData>
     private var currentItem = 0
@@ -42,6 +43,7 @@ class SingleActivity : AppCompatActivity() {
         }
         loadData()
         DataManager.observeDataChange()
+            .takeUntil(getLifecycleSignal(ActivityLifecycle.DESTROY))
             .map { DataManager.allCodeData(this).blockingGet() }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { adapter.dataList = it }
