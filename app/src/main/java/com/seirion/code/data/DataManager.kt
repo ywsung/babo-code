@@ -19,6 +19,12 @@ class DataManager {
                 .doAfterSuccess { event.onNext(true) }
                 .subscribeOn(Schedulers.io())!!
 
+        fun updateCodeData(context: Context, codeData: CodeData) =
+            Single.fromCallable { CodeDataBase.getInstance(context) }
+                .doOnSuccess { it.codeDataDao().insert(codeData) }
+                .doAfterSuccess { event.onNext(true) }
+                .subscribeOn(Schedulers.io())!!
+
         fun allCodeData(context: Context) =
             Single.fromCallable { CodeDataBase.getInstance(context) }
                 .map { it.codeDataDao().getAll() }

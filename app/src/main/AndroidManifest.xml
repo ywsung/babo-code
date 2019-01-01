@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.EditActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.InputCodeActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.ScanningActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.SingleActivity" android:screenOrientation="portrait" />

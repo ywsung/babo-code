@@ -76,6 +76,7 @@ class SingleActivity : AppCompatActivity() {
                 }
                 .show()
         }
+        edit.setOnClickListener { EditActivity.start(this, codeDataList[currentItem]) }
     }
 
     private class Adapter(context: Context, dataList: List<CodeData>): PagerAdapter() {
