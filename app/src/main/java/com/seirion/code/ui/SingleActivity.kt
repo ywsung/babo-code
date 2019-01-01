@@ -29,7 +29,10 @@ class SingleActivity : AppCompatActivity() {
 
     private lateinit var codeDataList: List<CodeData>
     private var currentItem = 0
+    private var needUpdate = false
+    private lateinit var adapter: Adapter
 
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single)
@@ -38,6 +41,18 @@ class SingleActivity : AppCompatActivity() {
             Log.d(TAG, "initial page: $currentItem")
         }
         loadData()
+        DataManager.observeDataChange()
+            .map { DataManager.allCodeData(this).blockingGet() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { adapter.dataList = it }
+            .subscribe({ adapter.notifyDataSetChanged() }, { Log.e(TAG, "Failed to update ui: $it") })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (needUpdate) {
+            viewPager.invalidate()
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -49,7 +64,7 @@ class SingleActivity : AppCompatActivity() {
     }
 
     private fun initUi() {
-        val adapter = Adapter(this, codeDataList)
+        adapter = Adapter(this, codeDataList)
         viewPager.adapter = adapter
         viewPager.currentItem = currentItem
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -76,12 +91,15 @@ class SingleActivity : AppCompatActivity() {
                 }
                 .show()
         }
-        edit.setOnClickListener { EditActivity.start(this, codeDataList[currentItem]) }
+        edit.setOnClickListener {
+            EditActivity.start(this, codeDataList[currentItem])
+            needUpdate = true
+        }
     }
 
     private class Adapter(context: Context, dataList: List<CodeData>): PagerAdapter() {
         private val context = context
-        private var dataList = dataList
+        var dataList = dataList
 
         override fun isViewFromObject(view: View, p: Any): Boolean {
             return view == p
@@ -99,6 +117,10 @@ class SingleActivity : AppCompatActivity() {
             val codeImage = view.findViewById<ImageView>(R.id.codeImage)
             codeImage.setImageBitmap(BitmapCache.get(codeData.code))
             return view
+        }
+
+        override fun getItemPosition(`object`: Any): Int {
+            return POSITION_NONE
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
