@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -56,12 +57,25 @@ class SingleActivity : AppCompatActivity() {
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                currentItem = position
             }
 
             override fun onPageSelected(position: Int) {
             }
         })
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.view_pager_item_margin)
+
+        delete.setOnClickListener {
+            val codeData = codeDataList[currentItem]
+            AlertDialog.Builder(this)
+                .setTitle(R.string.item_remove_title)
+                .setMessage(R.string.item_remove_message)
+                .setPositiveButton(R.string.delete) { _, _ ->
+                    DataManager.deleteCodeData(applicationContext, codeData)
+                    finish()
+                }
+                .show()
+        }
     }
 
     private class Adapter(context: Context, dataList: List<CodeData>): PagerAdapter() {
